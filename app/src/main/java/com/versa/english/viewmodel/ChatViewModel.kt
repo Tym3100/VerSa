@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.versa.english.model.ChatConfig
 import com.versa.english.model.Message
 import com.versa.english.repository.ChatRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 sealed class MessageStatus {
@@ -33,6 +34,8 @@ class ChatViewModel(private val repository: ChatRepository) : ViewModel() {
     fun updateConfig(config: ChatConfig) {
         currentConfig = config
     }
+
+    private var count = 0
 
     fun sendMessage(message: String) {
         if (message.isBlank()) return

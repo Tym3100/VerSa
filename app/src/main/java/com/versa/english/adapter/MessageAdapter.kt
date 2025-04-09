@@ -40,17 +40,18 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
 
     class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val messageTextView: TextView = itemView.findViewById(R.id.messageTextView)
+        private val messageContainer: View = itemView.findViewById(R.id.messageContainer)
         private val sendingProgressBar: ProgressBar = itemView.findViewById(R.id.sendingProgressBar)
         private val statusImageView: ImageView = itemView.findViewById(R.id.statusImageView)
 
         fun bind(message: Message, status: MessageStatus?) {
             messageTextView.text = message.content
-            val layoutParams = messageTextView.layoutParams as ViewGroup.MarginLayoutParams
+            val layoutParams = messageContainer.layoutParams as ViewGroup.MarginLayoutParams
             
             if (message.isUser) {
                 layoutParams.marginStart = 64
                 layoutParams.marginEnd = 16
-                messageTextView.setBackgroundResource(R.drawable.user_message_background)
+                messageContainer.setBackgroundResource(R.drawable.user_message_background)
                 
                 // Show status indicators only for user messages
                 when (status) {
@@ -76,12 +77,12 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
             } else {
                 layoutParams.marginStart = 16
                 layoutParams.marginEnd = 64
-                messageTextView.setBackgroundResource(R.drawable.assistant_message_background)
+                messageContainer.setBackgroundResource(R.drawable.assistant_message_background)
                 sendingProgressBar.visibility = View.GONE
                 statusImageView.visibility = View.GONE
             }
             
-            messageTextView.layoutParams = layoutParams
+            messageContainer.layoutParams = layoutParams
         }
     }
 } 
