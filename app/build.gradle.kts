@@ -1,6 +1,16 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+}
+fun getLocalProperty(key: String): String {
+    val properties = Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        properties.load(localPropertiesFile.inputStream())
+    }
+    return properties.getProperty(key) ?: ""
 }
 
 android {
@@ -13,8 +23,12 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField(
+            "String",
+            "DEEP_SEEK_API_KEY",
+            "\"${getLocalProperty("DEEP_SEEK_API_KEY")}\""
+        )
     }
 
     buildTypes {
@@ -35,6 +49,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 

@@ -1,9 +1,11 @@
 package com.versa.english.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.versa.english.data.api.DeepSeekApiConfig
 import com.versa.english.domain.model.ChatConfig
 import com.versa.english.domain.usecase.SendMessageUseCase
 import com.versa.english.presentation.model.MessageUi
@@ -37,7 +39,7 @@ class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
     private var count = 0
     fun sendMessage(message: String) {
         if (message.isBlank()) return
-
+        Log.e("ALO", "API_KEY=${DeepSeekApiConfig.API_KEY}")
         // Add user message immediately
         val userMessage = MessageUi(message, true)
         val currentMessages = _messages.value?.toMutableList() ?: mutableListOf()

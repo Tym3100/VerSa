@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.versa.english.data.api.ApiConfig
+import com.versa.english.data.api.DeepSeekApiConfig
 import com.versa.english.data.repository.ChatRepositoryImpl
 import com.versa.english.databinding.ActivityChatBinding
 import com.versa.english.domain.model.ChatConfig
@@ -40,7 +40,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun setupViewModel(config: ChatConfig) {
         val retrofit = Retrofit.Builder()
-            .baseUrl(ApiConfig.BASE_URL)
+            .baseUrl(DeepSeekApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
