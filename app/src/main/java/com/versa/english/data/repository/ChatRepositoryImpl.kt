@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 private const val TAG = "ChatRepository"
 
-class ChatRepositoryImpl(private val chatGPTService: ChatGPTService): ChatRepository {
+class ChatRepositoryImpl(private val chatGPTService: ChatGPTService) : ChatRepository {
     override suspend fun sendMessage(
         userMessage: String,
         config: ChatConfig

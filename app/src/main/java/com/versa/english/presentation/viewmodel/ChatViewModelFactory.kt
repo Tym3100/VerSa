@@ -2,7 +2,6 @@ package com.versa.english.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.versa.english.data.repository.ChatRepositoryImpl
 import com.versa.english.domain.usecase.SendMessageUseCase
 
 class ChatViewModelFactory(private val useCase: SendMessageUseCase) : ViewModelProvider.Factory {
