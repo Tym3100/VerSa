@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.versa.english.domain.model.ChatConfig
-import com.versa.english.domain.model.MessageDomain
-import com.versa.english.data.repository.ChatRepositoryImpl
 import com.versa.english.domain.usecase.SendMessageUseCase
+import com.versa.english.presentation.model.MessageUi
 import kotlinx.coroutines.launch
 
 sealed class MessageStatus {
@@ -17,8 +16,8 @@ sealed class MessageStatus {
 }
 
 class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
-    private val _messages = MutableLiveData<List<MessageDomain>>()
-    val messages: LiveData<List<MessageDomain>> = _messages
+    private val _messages = MutableLiveData<List<MessageUi>>()
+    val messages: LiveData<List<MessageUi>> = _messages
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -36,17 +35,19 @@ class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
     }
 
     private var count = 0
-
     fun sendMessage(message: String) {
         if (message.isBlank()) return
 
         // Add user message immediately
-        val userMessage = MessageDomain(message, true)
+        val userMessage = MessageUi(message, true)
         val currentMessages = _messages.value?.toMutableList() ?: mutableListOf()
         currentMessages.add(userMessage)
         _messages.value = currentMessages
         _messageStatus.value = MessageStatus.Sending
-
+        val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
+        updatedMessages.add(MessageUi("Response ${count++}", false))
+        _messages.value = updatedMessages
+        _messageStatus.value = MessageStatus.Sent
         viewModelScope.launch {
             try {
                 _isLoading.value = true
@@ -62,9 +63,5 @@ class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
                 _isLoading.value = false
             }
         }
-    }
-
-    fun clearMessages() {
-        _messages.value = emptyList()
     }
 } 

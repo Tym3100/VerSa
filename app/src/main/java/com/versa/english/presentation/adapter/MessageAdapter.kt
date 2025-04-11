@@ -8,17 +8,24 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.versa.english.R
-import com.versa.english.domain.model.MessageDomain
+import com.versa.english.presentation.model.MessageUi
 import com.versa.english.presentation.viewmodel.MessageStatus
 
+private const val VIEW_TYPE_USER = 0
+private const val VIEW_TYPE_ASSISTANT = 1
+
 class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
-    private val messages = mutableListOf<MessageDomain>()
+    private val messages = mutableListOf<MessageUi>()
     private val messageStatuses = mutableMapOf<Int, MessageStatus>()
 
-    fun submitList(newMessages: List<MessageDomain>) {
+    fun submitList(newMessages: List<MessageUi>) {
         messages.clear()
         messages.addAll(newMessages)
         notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (messages[position].isUser) VIEW_TYPE_USER else VIEW_TYPE_ASSISTANT
     }
 
     fun updateMessageStatus(position: Int, status: MessageStatus) {
@@ -27,9 +34,21 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_message, parent, false)
-        return MessageViewHolder(view)
+        return when (viewType) {
+            VIEW_TYPE_USER -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_message_user, parent, false)
+                MessageViewHolder(view)
+            }
+
+            VIEW_TYPE_ASSISTANT -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_message_assistent, parent, false)
+                MessageViewHolder(view)
+            }
+
+            else -> throw IllegalArgumentException("Unknown viewType: $viewType")
+        }
     }
 
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
@@ -44,8 +63,8 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
         private val sendingProgressBar: ProgressBar = itemView.findViewById(R.id.sendingProgressBar)
         private val statusImageView: ImageView = itemView.findViewById(R.id.statusImageView)
 
-        fun bind(message: MessageDomain, status: MessageStatus?) {
-            messageTextView.text = message.content
+        fun bind(message: MessageUi, status: MessageStatus?) {
+            messageTextView.text = message.text
             val layoutParams = messageContainer.layoutParams as ViewGroup.MarginLayoutParams
 
             if (message.isUser) {

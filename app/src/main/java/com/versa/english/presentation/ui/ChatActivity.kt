@@ -82,7 +82,6 @@ class ChatActivity : AppCompatActivity() {
         }
 
         viewModel.isLoading.observe(this) { isLoading ->
-            binding.loadingProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             binding.sendButton.isEnabled = !isLoading
         }
 
