@@ -1,4 +1,4 @@
-package com.versa.english.model
+package com.versa.english.domain.model
 
 data class Message(
     val content: String,

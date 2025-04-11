@@ -1,18 +1,18 @@
-package com.versa.english.repository
+package com.versa.english.data.repository
 
 import android.util.Log
-import com.versa.english.api.ApiErrorHandler
+import com.versa.english.data.api.ApiErrorHandler
 import com.versa.english.api.ChatGPTService
-import com.versa.english.api.Message as ApiMessage
-import com.versa.english.model.ChatConfig
-import com.versa.english.model.LanguageLevel
-import com.versa.english.model.Message
+import com.versa.english.api.ChatRequest
+import com.versa.english.domain.model.ChatConfig
+import com.versa.english.domain.model.LanguageLevel
+import com.versa.english.domain.model.Message
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private const val TAG = "ChatRepository"
 
-class ChatRepository(private val chatGPTService: ChatGPTService) {
+class ChatRepositoryImpl(private val chatGPTService: ChatGPTService) {
     private val messages = mutableListOf<Message>()
 
     suspend fun sendMessage(
@@ -25,7 +25,7 @@ class ChatRepository(private val chatGPTService: ChatGPTService) {
 
         val response = ApiErrorHandler.withRetry {
             chatGPTService.sendMessage(
-                com.versa.english.api.ChatRequest(
+                ChatRequest(
                     messages = apiMessages,
                     max_tokens = getMaxTokensForLevel(config.languageLevel)
                 )
@@ -59,10 +59,13 @@ class ChatRepository(private val chatGPTService: ChatGPTService) {
         """.trimIndent()
     }
 
-    private fun buildApiMessages(systemPrompt: String, userMessage: String): List<ApiMessage> {
+    private fun buildApiMessages(
+        systemPrompt: String,
+        userMessage: String
+    ): List<com.versa.english.api.Message> {
         return listOf(
-            ApiMessage("system", systemPrompt),
-            ApiMessage("user", userMessage)
+            com.versa.english.api.Message("system", systemPrompt),
+            com.versa.english.api.Message("user", userMessage)
         )
     }
 }

@@ -1,13 +1,13 @@
-package com.versa.english.ui
+package com.versa.english.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.versa.english.databinding.ActivityConfigBinding
-import com.versa.english.model.ChatConfig
-import com.versa.english.model.CommunicationTone
-import com.versa.english.model.LanguageLevel
-import com.versa.english.model.ResponseStyle
+import com.versa.english.domain.model.ChatConfig
+import com.versa.english.domain.model.CommunicationTone
+import com.versa.english.domain.model.LanguageLevel
+import com.versa.english.domain.model.ResponseStyle
 
 class ConfigActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConfigBinding

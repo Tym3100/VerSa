@@ -16,7 +16,7 @@
         android:theme="@style/Theme.VerSa"
         tools:targetApi="31">
         <activity
-            android:name=".ui.ConfigActivity"
+            android:name=".presentation.ui.ConfigActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ChatActivity"
+            android:name=".presentation.ui.ChatActivity"
             android:exported="false" />
     </application>
 

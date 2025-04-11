@@ -1,4 +1,4 @@
-package com.versa.english.adapter
+package com.versa.english.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +8,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.versa.english.R
-import com.versa.english.model.Message
-import com.versa.english.viewmodel.MessageStatus
+import com.versa.english.domain.model.Message
+import com.versa.english.presentation.viewmodel.MessageStatus
 
 class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
     private val messages = mutableListOf<Message>()
@@ -47,28 +47,31 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
         fun bind(message: Message, status: MessageStatus?) {
             messageTextView.text = message.content
             val layoutParams = messageContainer.layoutParams as ViewGroup.MarginLayoutParams
-            
+
             if (message.isUser) {
                 layoutParams.marginStart = 64
                 layoutParams.marginEnd = 16
                 messageContainer.setBackgroundResource(R.drawable.user_message_background)
-                
+
                 // Show status indicators only for user messages
                 when (status) {
                     is MessageStatus.Sending -> {
                         sendingProgressBar.visibility = View.VISIBLE
                         statusImageView.visibility = View.GONE
                     }
+
                     is MessageStatus.Sent -> {
                         sendingProgressBar.visibility = View.GONE
                         statusImageView.visibility = View.VISIBLE
                         statusImageView.setImageResource(R.drawable.ic_sent)
                     }
+
                     is MessageStatus.Error -> {
                         sendingProgressBar.visibility = View.GONE
                         statusImageView.visibility = View.VISIBLE
                         statusImageView.setImageResource(R.drawable.ic_error)
                     }
+
                     null -> {
                         sendingProgressBar.visibility = View.GONE
                         statusImageView.visibility = View.GONE
@@ -81,7 +84,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
                 sendingProgressBar.visibility = View.GONE
                 statusImageView.visibility = View.GONE
             }
-            
+
             messageContainer.layoutParams = layoutParams
         }
     }

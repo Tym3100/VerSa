@@ -1,13 +1,12 @@
-package com.versa.english.viewmodel
+package com.versa.english.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.versa.english.model.ChatConfig
-import com.versa.english.model.Message
-import com.versa.english.repository.ChatRepository
-import kotlinx.coroutines.delay
+import com.versa.english.domain.model.ChatConfig
+import com.versa.english.domain.model.Message
+import com.versa.english.data.repository.ChatRepositoryImpl
 import kotlinx.coroutines.launch
 
 sealed class MessageStatus {
@@ -16,7 +15,7 @@ sealed class MessageStatus {
     data class Error(val message: String) : MessageStatus()
 }
 
-class ChatViewModel(private val repository: ChatRepository) : ViewModel() {
+class ChatViewModel(private val repository: ChatRepositoryImpl) : ViewModel() {
     private val _messages = MutableLiveData<List<Message>>()
     val messages: LiveData<List<Message>> = _messages
 

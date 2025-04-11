@@ -1,4 +1,4 @@
-package com.versa.english.ui
+package com.versa.english.presentation.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -7,15 +7,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.versa.english.adapter.MessageAdapter
-import com.versa.english.api.ApiConfig
+import com.versa.english.presentation.adapter.MessageAdapter
+import com.versa.english.data.api.ApiConfig
 import com.versa.english.api.ChatGPTService
 import com.versa.english.databinding.ActivityChatBinding
-import com.versa.english.model.ChatConfig
-import com.versa.english.repository.ChatRepository
-import com.versa.english.viewmodel.ChatViewModel
-import com.versa.english.viewmodel.ChatViewModelFactory
-import com.versa.english.viewmodel.MessageStatus
+import com.versa.english.domain.model.ChatConfig
+import com.versa.english.data.repository.ChatRepositoryImpl
+import com.versa.english.presentation.viewmodel.ChatViewModel
+import com.versa.english.presentation.viewmodel.ChatViewModelFactory
+import com.versa.english.presentation.viewmodel.MessageStatus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -45,7 +45,7 @@ class ChatActivity : AppCompatActivity() {
             .build()
 
         val chatGPTService = retrofit.create(ChatGPTService::class.java)
-        val repository = ChatRepository(chatGPTService)
+        val repository = ChatRepositoryImpl(chatGPTService)
         val factory = ChatViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[ChatViewModel::class.java]
         viewModel.updateConfig(config)

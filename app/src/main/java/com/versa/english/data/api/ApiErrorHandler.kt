@@ -1,4 +1,4 @@
-package com.versa.english.api
+package com.versa.english.data.api
 
 import kotlinx.coroutines.delay
 import retrofit2.HttpException

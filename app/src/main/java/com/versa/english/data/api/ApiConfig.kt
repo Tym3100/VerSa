@@ -1,4 +1,4 @@
-package com.versa.english.api
+package com.versa.english.data.api
 
 object ApiConfig {
     const val BASE_URL = "https://api.deepseek.com/v1/" // DeepSeek API base URL
