@@ -147,7 +147,7 @@
             android:id="@+id/startConversationButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start Conversation"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="24dp"
+            android:text="Start Conversation" />
     </LinearLayout>
 </ScrollView>
