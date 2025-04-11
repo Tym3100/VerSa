@@ -55,7 +55,6 @@ class ChatRepository(private val chatGPTService: ChatGPTService) {
             User's language level: ${config.languageLevel.name.lowercase()}
             Communication tone: ${config.communicationTone.name.lowercase()}
             Response style: ${config.responseStyle.name.lowercase()}
-            ${if (config.personalization) "Please personalize responses based on user's information." else ""}
             ${if (config.topic.isNotEmpty()) "Current topic: ${config.topic}" else ""}
         """.trimIndent()
     }

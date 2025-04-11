@@ -24,25 +24,25 @@ class ConfigActivity : AppCompatActivity() {
     }
 
     private fun createConfigFromUI(): ChatConfig {
-        val languageLevel = when (binding.languageLevelGroup.checkedRadioButtonId) {
-            binding.beginnerLevel.id -> LanguageLevel.BEGINNER
-            binding.intermediateLevel.id -> LanguageLevel.INTERMEDIATE
-            binding.advancedLevel.id -> LanguageLevel.ADVANCED
-            binding.fluentLevel.id -> LanguageLevel.FLUENT
+        val languageLevel = when (binding.languageLevelGroup.checkedChipId) {
+            binding.beginnerChip.id -> LanguageLevel.BEGINNER
+            binding.intermediateChip.id -> LanguageLevel.INTERMEDIATE
+            binding.advancedChip.id -> LanguageLevel.ADVANCED
+            binding.fluentChip.id -> LanguageLevel.FLUENT
             else -> LanguageLevel.INTERMEDIATE
         }
 
-        val communicationTone = when (binding.communicationToneGroup.checkedRadioButtonId) {
-            binding.formalTone.id -> CommunicationTone.FORMAL
-            binding.informalTone.id -> CommunicationTone.INFORMAL
+        val communicationTone = when (binding.communicationToneGroup.checkedChipId) {
+            binding.formalChip.id -> CommunicationTone.FORMAL
+            binding.informalChip.id -> CommunicationTone.INFORMAL
             else -> CommunicationTone.FORMAL
         }
 
-        val responseStyle = when (binding.responseStyleGroup.checkedRadioButtonId) {
-            binding.shortStyle.id -> ResponseStyle.SHORT
-            binding.mediumStyle.id -> ResponseStyle.MEDIUM
-            binding.longStyle.id -> ResponseStyle.LONG
-            binding.customStyle.id -> ResponseStyle.CUSTOM
+        val responseStyle = when (binding.responseStyleGroup.checkedChipId) {
+            binding.shortChip.id -> ResponseStyle.SHORT
+            binding.mediumChip.id -> ResponseStyle.MEDIUM
+            binding.longChip.id -> ResponseStyle.LONG
+            binding.customChip.id -> ResponseStyle.CUSTOM
             else -> ResponseStyle.MEDIUM
         }
 
@@ -50,8 +50,7 @@ class ConfigActivity : AppCompatActivity() {
             languageLevel = languageLevel,
             communicationTone = communicationTone,
             responseStyle = responseStyle,
-            personalization = binding.personalizationCheckbox.isChecked,
-            topic = binding.topicEditText.text.toString()
+            topic = binding.topicInput.text.toString()
         )
     }
 

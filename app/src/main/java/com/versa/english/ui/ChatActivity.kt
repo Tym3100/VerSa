@@ -1,6 +1,7 @@
 package com.versa.english.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.versa.english.viewmodel.MessageStatus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private lateinit var viewModel: ChatViewModel
@@ -28,8 +30,8 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         val config = intent.getSerializableExtra("chat_config") as ChatConfig
+        Log.i(this.javaClass.simpleName, "config=$config")
         setupViewModel(config)
         setupRecyclerView()
         setupSendButton()

@@ -2,150 +2,146 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:spacing="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Language Parameters"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
-
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Language Level"
-            android:layout_marginTop="8dp"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <RadioGroup
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/languageLevelGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:singleSelection="true">
 
-            <RadioButton
-                android:id="@+id/beginnerLevel"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/beginnerChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Beginner"/>
+                android:text="Beginner" />
 
-            <RadioButton
-                android:id="@+id/intermediateLevel"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/intermediateChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Intermediate"
-                android:checked="true"/>
+                android:text="Intermediate" />
 
-            <RadioButton
-                android:id="@+id/advancedLevel"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/advancedChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Advanced"/>
+                android:text="Advanced" />
 
-            <RadioButton
-                android:id="@+id/fluentLevel"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/fluentChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fluent"/>
-        </RadioGroup>
+                android:text="Fluent" />
+        </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Communication Tone"
-            android:layout_marginTop="16dp"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <RadioGroup
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/communicationToneGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:singleSelection="true">
 
-            <RadioButton
-                android:id="@+id/formalTone"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/formalChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Formal"
-                android:checked="true"/>
+                android:text="Formal" />
 
-            <RadioButton
-                android:id="@+id/informalTone"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/informalChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Informal"/>
-        </RadioGroup>
+                android:text="Informal" />
+        </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Response Style"
-            android:layout_marginTop="16dp"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <RadioGroup
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/responseStyleGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:singleSelection="true">
 
-            <RadioButton
-                android:id="@+id/shortStyle"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/shortChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Short"/>
+                android:text="Short" />
 
-            <RadioButton
-                android:id="@+id/mediumStyle"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/mediumChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Medium"
-                android:checked="true"/>
+                android:text="Medium" />
 
-            <RadioButton
-                android:id="@+id/longStyle"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/longChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Long"/>
+                android:text="Long" />
 
-            <RadioButton
-                android:id="@+id/customStyle"
-                android:layout_width="match_parent"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/customChip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Custom"/>
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Contextual Parameters"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"/>
-
-        <CheckBox
-            android:id="@+id/personalizationCheckbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enable Personalization"/>
+                android:text="Custom" />
+        </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Topic of Communication"
-            android:layout_marginTop="16dp"/>
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/topicEditText"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter topic (optional)"/>
+            android:hint="Enter topic">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/topicInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/startConversationButton"
@@ -153,6 +149,5 @@
             android:layout_height="wrap_content"
             android:text="Start Conversation"
             android:layout_marginTop="24dp"/>
-
     </LinearLayout>
-</ScrollView> 
+</ScrollView>

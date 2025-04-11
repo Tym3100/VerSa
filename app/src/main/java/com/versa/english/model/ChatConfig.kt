@@ -6,7 +6,6 @@ data class ChatConfig(
     val languageLevel: LanguageLevel = LanguageLevel.INTERMEDIATE,
     val communicationTone: CommunicationTone = CommunicationTone.FORMAL,
     val responseStyle: ResponseStyle = ResponseStyle.MEDIUM,
-    val personalization: Boolean = false,
     val topic: String = ""
 ) : Serializable
 
