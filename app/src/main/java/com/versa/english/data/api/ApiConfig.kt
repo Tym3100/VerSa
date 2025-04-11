@@ -1,6 +1,6 @@
 package com.versa.english.data.api
 
 object ApiConfig {
-    const val BASE_URL = "https://api.deepseek.com/v1/" // DeepSeek API base URL
-    const val API_KEY = "API KEY" // Replace with your DeepSeek API key
+    const val BASE_URL = "https://api.openai.com/v1/"
+    const val API_KEY = "your-api-key-here" // TODO: Move to secure storage
 } 

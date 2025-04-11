@@ -1,5 +1,6 @@
 package com.versa.english.presentation.ui
 
+import ChatGPTService
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -7,12 +8,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.versa.english.presentation.adapter.MessageAdapter
 import com.versa.english.data.api.ApiConfig
-import com.versa.english.api.ChatGPTService
+import com.versa.english.data.repository.ChatRepositoryImpl
 import com.versa.english.databinding.ActivityChatBinding
 import com.versa.english.domain.model.ChatConfig
-import com.versa.english.data.repository.ChatRepositoryImpl
+import com.versa.english.domain.usecase.SendMessageUseCase
+import com.versa.english.presentation.adapter.MessageAdapter
 import com.versa.english.presentation.viewmodel.ChatViewModel
 import com.versa.english.presentation.viewmodel.ChatViewModelFactory
 import com.versa.english.presentation.viewmodel.MessageStatus
@@ -46,7 +47,8 @@ class ChatActivity : AppCompatActivity() {
 
         val chatGPTService = retrofit.create(ChatGPTService::class.java)
         val repository = ChatRepositoryImpl(chatGPTService)
-        val factory = ChatViewModelFactory(repository)
+        val useCase = SendMessageUseCase(repository)
+        val factory = ChatViewModelFactory(useCase)
         viewModel = ViewModelProvider(this, factory)[ChatViewModel::class.java]
         viewModel.updateConfig(config)
     }
@@ -96,11 +98,13 @@ class ChatActivity : AppCompatActivity() {
                         messageAdapter.updateMessageStatus(lastUserMessagePosition, status)
                     }
                 }
+
                 is MessageStatus.Sent -> {
                     if (lastUserMessagePosition != -1) {
                         messageAdapter.updateMessageStatus(lastUserMessagePosition, status)
                     }
                 }
+
                 is MessageStatus.Error -> {
                     if (lastUserMessagePosition != -1) {
                         messageAdapter.updateMessageStatus(lastUserMessagePosition, status)

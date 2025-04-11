@@ -8,14 +8,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.versa.english.R
-import com.versa.english.domain.model.Message
+import com.versa.english.domain.model.MessageDomain
 import com.versa.english.presentation.viewmodel.MessageStatus
 
 class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
-    private val messages = mutableListOf<Message>()
+    private val messages = mutableListOf<MessageDomain>()
     private val messageStatuses = mutableMapOf<Int, MessageStatus>()
 
-    fun submitList(newMessages: List<Message>) {
+    fun submitList(newMessages: List<MessageDomain>) {
         messages.clear()
         messages.addAll(newMessages)
         notifyDataSetChanged()
@@ -44,7 +44,7 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
         private val sendingProgressBar: ProgressBar = itemView.findViewById(R.id.sendingProgressBar)
         private val statusImageView: ImageView = itemView.findViewById(R.id.statusImageView)
 
-        fun bind(message: Message, status: MessageStatus?) {
+        fun bind(message: MessageDomain, status: MessageStatus?) {
             messageTextView.text = message.content
             val layoutParams = messageContainer.layoutParams as ViewGroup.MarginLayoutParams
 

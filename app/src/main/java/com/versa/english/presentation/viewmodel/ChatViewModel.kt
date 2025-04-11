@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.versa.english.domain.model.ChatConfig
-import com.versa.english.domain.model.Message
+import com.versa.english.domain.model.MessageDomain
 import com.versa.english.data.repository.ChatRepositoryImpl
+import com.versa.english.domain.usecase.SendMessageUseCase
 import kotlinx.coroutines.launch
 
 sealed class MessageStatus {
@@ -15,9 +16,9 @@ sealed class MessageStatus {
     data class Error(val message: String) : MessageStatus()
 }
 
-class ChatViewModel(private val repository: ChatRepositoryImpl) : ViewModel() {
-    private val _messages = MutableLiveData<List<Message>>()
-    val messages: LiveData<List<Message>> = _messages
+class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
+    private val _messages = MutableLiveData<List<MessageDomain>>()
+    val messages: LiveData<List<MessageDomain>> = _messages
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -40,7 +41,7 @@ class ChatViewModel(private val repository: ChatRepositoryImpl) : ViewModel() {
         if (message.isBlank()) return
 
         // Add user message immediately
-        val userMessage = Message(message, true)
+        val userMessage = MessageDomain(message, true)
         val currentMessages = _messages.value?.toMutableList() ?: mutableListOf()
         currentMessages.add(userMessage)
         _messages.value = currentMessages
@@ -49,7 +50,7 @@ class ChatViewModel(private val repository: ChatRepositoryImpl) : ViewModel() {
         viewModelScope.launch {
             try {
                 _isLoading.value = true
-                val assistantMessage = repository.sendMessage(message, currentConfig)
+                val assistantMessage = useCase.invoke(message, currentConfig)
                 val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
                 updatedMessages.add(assistantMessage)
                 _messages.value = updatedMessages
