@@ -15,12 +15,16 @@ fun buildSystemPrompt(config: ChatConfig): String {
 
 fun buildApiMessages(
     systemPrompt: String,
-    userMessage: String
+    userMessage: String,
+    messagesHistory: MutableList<ApiMessage>
 ): List<ApiMessage> {
-    return listOf(
-        ApiMessage("system", systemPrompt),
-        ApiMessage("user", userMessage)
+    messagesHistory.addAll(
+        listOf(
+            ApiMessage("system", systemPrompt),
+            ApiMessage("user", userMessage)
+        )
     )
+    return messagesHistory
 }
 
 fun getMaxTokensForLevel(level: LanguageLevel): Int {

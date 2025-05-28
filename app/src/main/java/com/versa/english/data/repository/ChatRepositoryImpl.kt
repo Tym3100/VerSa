@@ -3,7 +3,9 @@ package com.versa.english.data.repository
 import DeepSeekService
 import android.util.Log
 import com.versa.english.data.api.ApiErrorHandler
+import com.versa.english.data.mapper.toData
 import com.versa.english.data.mapper.toDomain
+import com.versa.english.data.model.request_models.ApiMessage
 import com.versa.english.data.model.request_models.ChatRequest
 import com.versa.english.data.model.request_models.buildApiMessages
 import com.versa.english.data.model.request_models.buildSystemPrompt
@@ -16,13 +18,15 @@ import kotlinx.coroutines.withContext
 
 private const val TAG = "ChatRepository"
 
+val messageHistory = mutableListOf<ApiMessage>()
+
 class ChatRepositoryImpl(private val deepSeekService: DeepSeekService) : ChatRepository {
     override suspend fun sendMessage(
         userMessage: String,
         config: ChatConfig
     ): MessageDomain = withContext(Dispatchers.IO) {
         val systemPrompt = buildSystemPrompt(config)
-        val apiMessages = buildApiMessages(systemPrompt, userMessage)
+        val apiMessages = buildApiMessages(systemPrompt, userMessage, messageHistory)
 
         Log.d(TAG, "Sending message: $apiMessages")
         val response = ApiErrorHandler.withRetry {
@@ -34,6 +38,8 @@ class ChatRepositoryImpl(private val deepSeekService: DeepSeekService) : ChatRep
             )
         }
         Log.d(TAG, "Received response: ${response.choices.first().message.content}")
-        response.choices.first().message.toDomain()
+        val message = response.choices.first().message
+        messageHistory.add(message.toData())
+        message.toDomain()
     }
 }
