@@ -1,10 +1,10 @@
 package com.versa.english.presentation.ui
 
-import ChatGPTService
+import DeepSeekService
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.versa.english.data.api.DeepSeekApiConfig
@@ -16,9 +16,13 @@ import com.versa.english.presentation.adapter.MessageAdapter
 import com.versa.english.presentation.viewmodel.ChatViewModel
 import com.versa.english.presentation.viewmodel.ChatViewModelFactory
 import com.versa.english.presentation.viewmodel.MessageStatus
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
+
+private const val TIMEOUT_MILLIS = 120_000L
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
@@ -31,21 +35,30 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val config = intent.getSerializableExtra("chat_config") as ChatConfig
-        Log.i(this.javaClass.simpleName, "config=$config")
         setupViewModel(config)
         setupRecyclerView()
         setupSendButton()
         observeViewModel()
     }
 
+    private val okHttpClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .connectTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT_MILLIS, TimeUnit.SECONDS)
+            .build()
+    }
+
     private fun setupViewModel(config: ChatConfig) {
+
         val retrofit = Retrofit.Builder()
             .baseUrl(DeepSeekApiConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
 
-        val chatGPTService = retrofit.create(ChatGPTService::class.java)
-        val repository = ChatRepositoryImpl(chatGPTService)
+        val deepSeekService = retrofit.create(DeepSeekService::class.java)
+        val repository = ChatRepositoryImpl(deepSeekService)
         val useCase = SendMessageUseCase(repository)
         val factory = ChatViewModelFactory(useCase)
         viewModel = ViewModelProvider(this, factory)[ChatViewModel::class.java]
@@ -75,38 +88,30 @@ class ChatActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.messages.observe(this) { messages ->
             messageAdapter.submitList(messages)
-            if (messages.isNotEmpty()) {
-                binding.messagesRecyclerView.scrollToPosition(messages.size - 1) // Scroll to the latest message
-            }
+            if (messages.isNotEmpty())
+                binding.messagesRecyclerView.scrollToPosition(messages.size - 1)
         }
-
         viewModel.isLoading.observe(this) { isLoading ->
-            binding.sendButton.isEnabled = !isLoading
+            binding.sendButton.isVisible = !isLoading
+            binding.sendingProgressBar.isVisible = isLoading
         }
-
         viewModel.error.observe(this) { error ->
             Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
         }
-
         viewModel.messageStatus.observe(this) { status ->
             when (status) {
                 is MessageStatus.Sending -> {
                     lastUserMessagePosition = viewModel.messages.value?.size?.minus(1) ?: -1
-                    if (lastUserMessagePosition != -1) {
+                    if (lastUserMessagePosition != -1)
                         messageAdapter.updateMessageStatus(lastUserMessagePosition, status)
-                    }
                 }
 
-                is MessageStatus.Sent -> {
-                    if (lastUserMessagePosition != -1) {
-                        messageAdapter.updateMessageStatus(lastUserMessagePosition, status)
-                    }
-                }
+                is MessageStatus.Sent -> if (lastUserMessagePosition != -1)
+                    messageAdapter.updateMessageStatus(lastUserMessagePosition, status)
 
                 is MessageStatus.Error -> {
-                    if (lastUserMessagePosition != -1) {
+                    if (lastUserMessagePosition != -1)
                         messageAdapter.updateMessageStatus(lastUserMessagePosition, status)
-                    }
                     Toast.makeText(this, "Ошибка: ${status.message}", Toast.LENGTH_SHORT).show()
                 }
             }

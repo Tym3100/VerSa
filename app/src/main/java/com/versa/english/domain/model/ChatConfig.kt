@@ -24,6 +24,5 @@ enum class CommunicationTone {
 enum class ResponseStyle {
     SHORT,
     MEDIUM,
-    LONG,
-    CUSTOM
-} 
+    LONG
+}

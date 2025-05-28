@@ -1,6 +1,6 @@
 package com.versa.english.data.repository
 
-import ChatGPTService
+import DeepSeekService
 import android.util.Log
 import com.versa.english.data.api.ApiErrorHandler
 import com.versa.english.data.mapper.toDomain
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 private const val TAG = "ChatRepository"
 
-class ChatRepositoryImpl(private val chatGPTService: ChatGPTService) : ChatRepository {
+class ChatRepositoryImpl(private val deepSeekService: DeepSeekService) : ChatRepository {
     override suspend fun sendMessage(
         userMessage: String,
         config: ChatConfig
@@ -26,7 +26,7 @@ class ChatRepositoryImpl(private val chatGPTService: ChatGPTService) : ChatRepos
 
         Log.d(TAG, "Sending message: $apiMessages")
         val response = ApiErrorHandler.withRetry {
-            chatGPTService.sendMessage(
+            deepSeekService.sendMessage(
                 ChatRequest(
                     messages = apiMessages,
                     maxTokens = getMaxTokensForLevel(config.languageLevel)

@@ -66,13 +66,10 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
         fun bind(message: MessageUi, status: MessageStatus?) {
             messageTextView.text = message.text
             val layoutParams = messageContainer.layoutParams as ViewGroup.MarginLayoutParams
-
             if (message.isUser) {
                 layoutParams.marginStart = 64
                 layoutParams.marginEnd = 16
                 messageContainer.setBackgroundResource(R.drawable.user_message_background)
-
-                // Show status indicators only for user messages
                 when (status) {
                     is MessageStatus.Sending -> {
                         sendingProgressBar.visibility = View.VISIBLE
@@ -103,7 +100,6 @@ class MessageAdapter : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() 
                 sendingProgressBar.visibility = View.GONE
                 statusImageView.visibility = View.GONE
             }
-
             messageContainer.layoutParams = layoutParams
         }
     }

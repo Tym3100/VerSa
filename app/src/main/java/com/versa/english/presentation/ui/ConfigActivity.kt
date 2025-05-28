@@ -42,7 +42,6 @@ class ConfigActivity : AppCompatActivity() {
             binding.shortChip.id -> ResponseStyle.SHORT
             binding.mediumChip.id -> ResponseStyle.MEDIUM
             binding.longChip.id -> ResponseStyle.LONG
-            binding.customChip.id -> ResponseStyle.CUSTOM
             else -> ResponseStyle.MEDIUM
         }
 

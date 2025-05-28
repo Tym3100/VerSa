@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.versa.english.data.api.DeepSeekApiConfig
 import com.versa.english.domain.model.ChatConfig
 import com.versa.english.domain.usecase.SendMessageUseCase
 import com.versa.english.presentation.model.MessageUi
@@ -16,6 +15,8 @@ sealed class MessageStatus {
     object Sent : MessageStatus()
     data class Error(val message: String) : MessageStatus()
 }
+
+private const val TAG = "ChatViewModel"
 
 class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
     private val _messages = MutableLiveData<List<MessageUi>>()
@@ -36,18 +37,14 @@ class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
         currentConfig = config
     }
 
-    private var count = 0
     fun sendMessage(message: String) {
         if (message.isBlank()) return
-        Log.e("ALO", "API_KEY=${DeepSeekApiConfig.API_KEY}")
-        // Add user message immediately
         val userMessage = MessageUi(message, true)
         val currentMessages = _messages.value?.toMutableList() ?: mutableListOf()
         currentMessages.add(userMessage)
         _messages.value = currentMessages
         _messageStatus.value = MessageStatus.Sending
         val updatedMessages = _messages.value?.toMutableList() ?: mutableListOf()
-        updatedMessages.add(MessageUi("Response ${count++}", false))
         _messages.value = updatedMessages
         _messageStatus.value = MessageStatus.Sent
         viewModelScope.launch {
@@ -59,6 +56,7 @@ class ChatViewModel(private val useCase: SendMessageUseCase) : ViewModel() {
                 _messages.value = updatedMessages
                 _messageStatus.value = MessageStatus.Sent
             } catch (e: Exception) {
+                Log.e(TAG, "Error: ${e.toString()}. Message error: ${e.message}")
                 _error.value = e.message ?: "An error occurred"
                 _messageStatus.value = MessageStatus.Error(e.message ?: "An error occurred")
             } finally {
