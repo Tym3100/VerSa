@@ -7,4 +7,4 @@ import com.versa.english.domain.model.MessageDomain
 fun MessageResponse.toDomain(): MessageDomain = MessageDomain(this.content, this.isUser)
 
 fun MessageResponse.toData(): ApiMessage =
-    ApiMessage(this.content, if (this.isUser) "user" else "assistant")
+    ApiMessage(if (this.isUser) "user" else "assistant", this.content)
